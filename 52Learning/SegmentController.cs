@@ -39,8 +39,10 @@ namespace _52Learning
             var currentPosition = GetCurrentPlayTime();
             if (currentPosition >= CurrentPlayingSegment.End)
             {
-                OnEndTimeArrived();
+                //下面这两句不能调换。
+                //需要先结束掉Timer，然后如果client有需求，可以再开启，如果没需求，不管就行。
                 Stop();
+                OnEndTimeArrived();
             }
         }
         public static void Start()

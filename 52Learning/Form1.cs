@@ -54,50 +54,64 @@ namespace _52Learning
                 MessageBox.Show("开始时间不能晚于结束时间");
                 return null;
             }
-            return new VideoSegment()
-            {
-                Start = start,
-                End = end
-            };
+            return new VideoSegment(start, end);
         }
         private void btnSaveSeg_Click(object sender, EventArgs e)
         {
             var seg = MakeVideoSeg();
             if (seg == null)
                 return;
-            //如果现有存在，则不处理；不存在，则创建
-            var existingSeg = CurrentVideo.Segments.FirstOrDefault(p => p == seg);
-            if (existingSeg == null)
+
+            if (treeSegs.SelectedNode != null && treeSegs.SelectedNode.Parent==null)//片段树选择了片段节点
+            {
+                var selectedSeg = treeSegs.SelectedNode.Tag as VideoSegment;
+                if (selectedSeg != null)
+                {
+                    selectedSeg.Start = seg.Start;
+                    selectedSeg.End = seg.End;
+                }
+                treeSegs.SelectedNode.Text = selectedSeg.Name;
+            }
+            else
             {
                 CurrentVideo.Segments.Add(seg);
-                var json = JsonConvert.SerializeObject(AllVideos);
-                File.WriteAllText(MenuFile, json);
-                RefreshSegTree();
-            }   
+                var treeNode = new TreeNode(seg.Name);
+                treeNode.Tag = seg;
+                treeSegs.Nodes.Add(treeNode);
+            }
+            //Save to file and refresh tree
+            var json = JsonConvert.SerializeObject(AllVideos);
+            File.WriteAllText(MenuFile, json);
         }
 
         private void btnRelateTagSeg_Click(object sender, EventArgs e)
         {
-            var tag = cbTags.Text;
-            var seg = MakeVideoSeg();
-            if (seg == null)
+            //片段树 没有选择任何节点
+            if (treeSegs.SelectedNode == null)
                 return;
-            //如果现有存在，则关联现有的；不存在，则创建新的，并关联
-            var existingSeg = CurrentVideo.Segments.FirstOrDefault(p => p == seg);
-            if (existingSeg == null)
-            {//不存在
-                seg.Tags.Add(new Tag(tag));
-                CurrentVideo.Segments.Add(seg);
-            }
-            else
+
+            //片段树选择了 片段节点，那么，在此片段下，新增标签
+            if (treeSegs.SelectedNode.Parent==null)
             {
-                if (!existingSeg.Tags.Any(p => p.TagName == tag))
-                    existingSeg.Tags.Add(new Tag(tag));
+                var tag = new _52Learning.Tag(cbTags.Text);
+                //给片段数据增加标签
+                var selectedSeg = treeSegs.SelectedNode.Tag as VideoSegment;
+                selectedSeg.Tags.Add(tag);
+                //给树增加节点
+                var treeNode = new TreeNode(cbTags.Text);
+                treeNode.Tag = tag;
+                treeSegs.SelectedNode.Nodes.Add(treeNode);
+            }
+            else //片段树选择了 标签节点，那边编辑选中的标签
+            {
+                //给标签数据修改标签名称
+                var selectedTag = treeSegs.SelectedNode.Tag as Tag;
+                selectedTag.TagName = cbTags.Text;
+                //给树设置节点名称
+                treeSegs.SelectedNode.Text = cbTags.Text;
             }
             var json = JsonConvert.SerializeObject(AllVideos);
             File.WriteAllText(MenuFile, json);
-            RefreshSegTree();
-            RefreshTagTree();
         }
         private List<VideoInfo> allVideos = null;
         private List<VideoInfo> AllVideos
@@ -150,9 +164,12 @@ namespace _52Learning
             foreach (var seg in CurrentVideo.Segments)
             {
                 var treeNode = new TreeNode(seg.Name);
+                treeNode.Tag = seg;
                 foreach (var tag in seg.Tags)
                 {
-                    treeNode.Nodes.Add(tag.TagName);
+                    var subTreeNode = new TreeNode(tag.TagName);
+                    subTreeNode.Tag = tag;
+                    treeNode.Nodes.Add(subTreeNode);
                 }
                 treeSegs.Nodes.Add(treeNode);
             }
@@ -164,10 +181,13 @@ namespace _52Learning
             foreach (var tag in tags)
             {
                 var treeNode = new TreeNode(tag.TagName);
+                treeNode.Tag = tag;
                 var tagSegs = CurrentVideo.Segments.Where(p => p.Tags.Contains(tag));
                 foreach (var tagSeg in tagSegs)
                 {
-                    treeNode.Nodes.Add(tagSeg.Name);
+                    var subNode = new TreeNode(tagSeg.Name);
+                    subNode.Tag = tagSeg;
+                    treeNode.Nodes.Add(subNode);
                 }
                 treeTags.Nodes.Add(treeNode);
             }
@@ -175,7 +195,20 @@ namespace _52Learning
 
         private void btnPlaySegs_Click(object sender, EventArgs e)
         {
-            //需要做一个定时器，每秒触发一次时间检查。如果超过，则进入下一Seg
+            PlayerController.SegPlayingList = CurrentVideo.Segments.Select(p=>p as Segment).ToList();
+            PlayerController.GetCurrentPlayTime = () => player.Ctlcontrols.currentPosition;
+            PlayerController.SetPlayPosition = (p) => player.Ctlcontrols.currentPosition = p;
+            
+            PlayerController.PlayingMode = PlayingMode.Once;
+            if (cbPlayMode.Text == "循环")
+                PlayerController.PlayingMode = PlayingMode.Repeat;
+            if (cbPlayMode.Text == "随机单次")
+                PlayerController.PlayingMode = PlayingMode.RandomOnce;
+            if (cbPlayMode.Text == "随机循环")
+                PlayerController.PlayingMode = PlayingMode.RandomRepeat;
+
+            PlayerController.Start();
+
         }
     }
 }

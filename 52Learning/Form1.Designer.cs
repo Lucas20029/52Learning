@@ -46,6 +46,7 @@
             this.btnEndAdd = new System.Windows.Forms.Button();
             this.btnOpenVideo = new System.Windows.Forms.Button();
             this.btnPlaySegs = new System.Windows.Forms.Button();
+            this.cbPlayMode = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.player)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -61,12 +62,13 @@
             this.player.Location = new System.Drawing.Point(1, -1);
             this.player.Name = "player";
             this.player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("player.OcxState")));
-            this.player.Size = new System.Drawing.Size(654, 425);
+            this.player.Size = new System.Drawing.Size(876, 560);
             this.player.TabIndex = 0;
             // 
             // btnSaveSeg
             // 
-            this.btnSaveSeg.Location = new System.Drawing.Point(380, 431);
+            this.btnSaveSeg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSaveSeg.Location = new System.Drawing.Point(380, 566);
             this.btnSaveSeg.Name = "btnSaveSeg";
             this.btnSaveSeg.Size = new System.Drawing.Size(70, 23);
             this.btnSaveSeg.TabIndex = 1;
@@ -76,15 +78,17 @@
             // 
             // tbSegStart
             // 
-            this.tbSegStart.Location = new System.Drawing.Point(56, 434);
+            this.tbSegStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbSegStart.Location = new System.Drawing.Point(56, 569);
             this.tbSegStart.Name = "tbSegStart";
             this.tbSegStart.Size = new System.Drawing.Size(100, 21);
             this.tbSegStart.TabIndex = 2;
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 440);
+            this.label1.Location = new System.Drawing.Point(6, 575);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 3;
@@ -92,8 +96,9 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(187, 437);
+            this.label2.Location = new System.Drawing.Point(187, 572);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 5;
@@ -101,22 +106,25 @@
             // 
             // tbSegEnd
             // 
-            this.tbSegEnd.Location = new System.Drawing.Point(246, 433);
+            this.tbSegEnd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbSegEnd.Location = new System.Drawing.Point(246, 568);
             this.tbSegEnd.Name = "tbSegEnd";
             this.tbSegEnd.Size = new System.Drawing.Size(100, 21);
             this.tbSegEnd.TabIndex = 4;
             // 
             // cbTags
             // 
+            this.cbTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbTags.FormattingEnabled = true;
-            this.cbTags.Location = new System.Drawing.Point(460, 433);
+            this.cbTags.Location = new System.Drawing.Point(460, 568);
             this.cbTags.Name = "cbTags";
             this.cbTags.Size = new System.Drawing.Size(121, 20);
             this.cbTags.TabIndex = 7;
             // 
             // btnRelateTagSeg
             // 
-            this.btnRelateTagSeg.Location = new System.Drawing.Point(587, 432);
+            this.btnRelateTagSeg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnRelateTagSeg.Location = new System.Drawing.Point(587, 567);
             this.btnRelateTagSeg.Name = "btnRelateTagSeg";
             this.btnRelateTagSeg.Size = new System.Drawing.Size(68, 23);
             this.btnRelateTagSeg.TabIndex = 8;
@@ -126,12 +134,14 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(661, -1);
+            this.tabControl1.Location = new System.Drawing.Point(883, -1);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(142, 425);
+            this.tabControl1.Size = new System.Drawing.Size(174, 560);
             this.tabControl1.TabIndex = 9;
             // 
             // tabPage1
@@ -140,7 +150,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(134, 399);
+            this.tabPage1.Size = new System.Drawing.Size(166, 534);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "片段管理";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -150,7 +160,7 @@
             this.treeSegs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeSegs.Location = new System.Drawing.Point(3, 3);
             this.treeSegs.Name = "treeSegs";
-            this.treeSegs.Size = new System.Drawing.Size(128, 393);
+            this.treeSegs.Size = new System.Drawing.Size(160, 528);
             this.treeSegs.TabIndex = 0;
             // 
             // tabPage2
@@ -174,7 +184,8 @@
             // 
             // btnStartAdd
             // 
-            this.btnStartAdd.Location = new System.Drawing.Point(153, 432);
+            this.btnStartAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnStartAdd.Location = new System.Drawing.Point(153, 567);
             this.btnStartAdd.Name = "btnStartAdd";
             this.btnStartAdd.Size = new System.Drawing.Size(28, 23);
             this.btnStartAdd.TabIndex = 10;
@@ -184,7 +195,8 @@
             // 
             // btnEndAdd
             // 
-            this.btnEndAdd.Location = new System.Drawing.Point(346, 433);
+            this.btnEndAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnEndAdd.Location = new System.Drawing.Point(346, 568);
             this.btnEndAdd.Name = "btnEndAdd";
             this.btnEndAdd.Size = new System.Drawing.Size(28, 23);
             this.btnEndAdd.TabIndex = 11;
@@ -194,7 +206,8 @@
             // 
             // btnOpenVideo
             // 
-            this.btnOpenVideo.Location = new System.Drawing.Point(665, 432);
+            this.btnOpenVideo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnOpenVideo.Location = new System.Drawing.Point(665, 567);
             this.btnOpenVideo.Name = "btnOpenVideo";
             this.btnOpenVideo.Size = new System.Drawing.Size(75, 23);
             this.btnOpenVideo.TabIndex = 12;
@@ -204,7 +217,8 @@
             // 
             // btnPlaySegs
             // 
-            this.btnPlaySegs.Location = new System.Drawing.Point(747, 428);
+            this.btnPlaySegs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPlaySegs.Location = new System.Drawing.Point(890, 568);
             this.btnPlaySegs.Name = "btnPlaySegs";
             this.btnPlaySegs.Size = new System.Drawing.Size(75, 23);
             this.btnPlaySegs.TabIndex = 13;
@@ -212,11 +226,25 @@
             this.btnPlaySegs.UseVisualStyleBackColor = true;
             this.btnPlaySegs.Click += new System.EventHandler(this.btnPlaySegs_Click);
             // 
+            // cbPlayMode
+            // 
+            this.cbPlayMode.FormattingEnabled = true;
+            this.cbPlayMode.Items.AddRange(new object[] {
+            "单次",
+            "循环",
+            "随机单次",
+            "随机循环"});
+            this.cbPlayMode.Location = new System.Drawing.Point(972, 569);
+            this.cbPlayMode.Name = "cbPlayMode";
+            this.cbPlayMode.Size = new System.Drawing.Size(78, 20);
+            this.cbPlayMode.TabIndex = 14;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(802, 467);
+            this.ClientSize = new System.Drawing.Size(1056, 602);
+            this.Controls.Add(this.cbPlayMode);
             this.Controls.Add(this.btnPlaySegs);
             this.Controls.Add(this.btnOpenVideo);
             this.Controls.Add(this.btnEndAdd);
@@ -261,6 +289,7 @@
         private System.Windows.Forms.Button btnEndAdd;
         private System.Windows.Forms.Button btnOpenVideo;
         private System.Windows.Forms.Button btnPlaySegs;
+        private System.Windows.Forms.ComboBox cbPlayMode;
     }
 }
 
