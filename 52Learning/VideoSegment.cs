@@ -12,6 +12,7 @@ namespace _52Learning
         {
 
         }
+        public string VideoPath { get; set; }
         public List<Tag> Tags { get; set; } = new List<Tag>();
     }
 }

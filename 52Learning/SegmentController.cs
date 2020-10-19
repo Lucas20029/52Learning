@@ -19,7 +19,7 @@ namespace _52Learning
         /// <summary>
         /// 由Client设置传入，到达片段的结束时间时，会执行该函数
         /// </summary>
-        public static Action OnEndTimeArrived { get; set; }
+        public static Action<Segment> OnEndTimeArrived { get; set; }
         /// <summary>
         /// 执行的时间范围，当到达结束时间时，会触发OnEndTimeArrived函数执行
         /// </summary>
@@ -42,7 +42,7 @@ namespace _52Learning
                 //下面这两句不能调换。
                 //需要先结束掉Timer，然后如果client有需求，可以再开启，如果没需求，不管就行。
                 Stop();
-                OnEndTimeArrived();
+                OnEndTimeArrived(CurrentPlayingSegment);
             }
         }
         public static void Start()

@@ -18,7 +18,7 @@ namespace _52Learning
          * 需要支持，正在播放中的情况下，停止当前的，启动新的
          */
 
-        public static List<Segment> SegPlayingList = new List<Segment>();
+        public static List<VideoSegment> SegPlayingList = new List<VideoSegment>();
         private static int CurrentPlayingIndex = 0;
         private static List<int> RandomlyLeftIndexes { get; set; }
 
@@ -27,6 +27,7 @@ namespace _52Learning
 
         //回调播放器的设置播放位置函数
         public static Action<double> SetPlayPosition { get; set; }
+        public static Action<string> PlayVideo { get; set; }
 
         //获取
         public static Func<double> GetCurrentPlayTime { get; set; }
@@ -44,11 +45,14 @@ namespace _52Learning
             SegmentController.GetCurrentPlayTime = GetCurrentPlayTime;
             SegmentController.OnEndTimeArrived = OnOneSegEnd;
             SegmentController.CurrentPlayingSegment = SegPlayingList[CurrentPlayingIndex];
+            PlayVideo(SegPlayingList[CurrentPlayingIndex].VideoPath);
             SetPlayPosition(SegPlayingList[CurrentPlayingIndex].Start);
             SegmentController.Start();
         }
-        private static void OnOneSegEnd()
+
+        private static void OnOneSegEnd(Segment endedSegment)
         {
+            #region 计算下一个要播放的index
             CurrentPlayingIndex++; //指向下一个Seg
             if (PlayingMode== PlayingMode.Once)
             {
@@ -84,7 +88,14 @@ namespace _52Learning
                 CurrentPlayingIndex = RandomlyLeftIndexes[nextIndex];
                 RandomlyLeftIndexes.RemoveAt(nextIndex);
             }
+            #endregion
+
             SegmentController.CurrentPlayingSegment = SegPlayingList[CurrentPlayingIndex];
+
+            if((endedSegment as VideoSegment).VideoPath != SegPlayingList[CurrentPlayingIndex].VideoPath)
+            {
+                PlayVideo(SegPlayingList[CurrentPlayingIndex].VideoPath);
+            }
             SetPlayPosition(SegPlayingList[CurrentPlayingIndex].Start);
             SegmentController.Start();
         }
