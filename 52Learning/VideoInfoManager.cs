@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using _52Learning.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,9 +42,12 @@ namespace _52Learning
             var result = new List<VideoInfo>();
             foreach (var file in allFiles)
             {
+                if (!File.Exists(file))
+                    continue;
                 var viJson = File.ReadAllText(file);
-                var videoInfo = JsonConvert.DeserializeObject<VideoInfo>(viJson);
-                result.Add(videoInfo);
+                var videoInfo = JsonHelper.Deserialize<VideoInfo>(viJson);
+                if(videoInfo!=null)
+                    result.Add(videoInfo);
             }
             return result;
         }
@@ -56,6 +60,10 @@ namespace _52Learning
             var file = Path.GetFileNameWithoutExtension(videoPath);
             return  $"{dir}/{file}.vi";
         }
+        public void AddVideoInfo(VideoInfo vi)
+        {
+            AllVideoInfos.Add(vi);
+        }
         
         //3. 
 
@@ -65,17 +73,32 @@ namespace _52Learning
              *   如果存在，则只需要更新 videopath 下的 vi文件即可
              *   如果不存在，则需要把vi文件写入 menu中，再创建对应vi文件
              */
-            var viPath = GetViPathFromVideoPath(video.VideoPath);
-            //如果vi文件在menu中不存在,把当前文件路径写入Menu
+            //如果vi文件在menu中不存在,则需要在allvideo中加入该视频
             if (!AllVideoInfos.Any(p => p.VideoPath.Equals(video.VideoPath, StringComparison.OrdinalIgnoreCase)))
             {
-                var files = AllVideoInfos.Select(p => GetViPathFromVideoPath(p.VideoPath)).ToList();
-                files.Add(viPath);
-                File.WriteAllLines(TopMenuPath, files);
+                AllVideoInfos.Add(video);
             }
+            var viPath = GetViPathFromVideoPath(video.VideoPath);
+            
+            //更新Menu文件
+            var files = AllVideoInfos.Select(p =>GetViPathFromVideoPath( p.VideoPath)).ToArray();
+            File.WriteAllLines(TopMenuPath, files);
+
             //把VideoInfo信息写入Vi文件
             var viJson = JsonConvert.SerializeObject(video);
             File.WriteAllText(viPath, viJson);
+        }
+
+        public void SaveAllVideoInfos()
+        {
+            var allFiles = AllVideoInfos.Select(p => GetViPathFromVideoPath(p.VideoPath)).ToArray();
+            File.WriteAllLines(TopMenuPath, allFiles);
+            foreach(var vi in AllVideoInfos)
+            {
+                var vipath = GetViPathFromVideoPath(vi.VideoPath);
+                var viJson = JsonHelper.Serialize(vi);
+                File.WriteAllText(vipath, viJson);
+            }
         }
     }
 }

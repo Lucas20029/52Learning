@@ -30,11 +30,11 @@ namespace TestConsole
                 Console.WriteLine($"Current Position Set to :{p}");
             };
             PlayerController.PlayingMode = PlayingMode.RandomOnce;
-            PlayerController.SegPlayingList = new List<Segment>()
+            PlayerController.SegPlayingList = new List<VideoSegment>()
             {
-                new Segment(){ Start=6.9,End=10.2 },
-                new Segment(){ Start=7.8, End =9.2},
-                new Segment(){ Start=15.9, End=20.1}
+                new VideoSegment(){ Start=6.9,End=10.2 },
+                new VideoSegment(){ Start=7.8, End =9.2},
+                new VideoSegment(){ Start=15.9, End=20.1}
             };
             PlayerController.Start();
             Console.ReadKey();
@@ -48,7 +48,7 @@ namespace TestConsole
                 Console.WriteLine($"Called Get Current Position:{CurrentTime}");
                 return CurrentTime;
             };
-            SegmentController.OnEndTimeArrived = () =>
+            SegmentController.OnEndTimeArrived = (p) =>
             {
                 Console.WriteLine("EndTime Arrived!");
             };

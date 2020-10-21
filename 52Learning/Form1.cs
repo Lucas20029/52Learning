@@ -68,8 +68,7 @@ namespace _52Learning
         }
         #endregion
 
-        const string MenuFile = "Data\\menu.txt";
-
+        
         private void btnStartAdd_Click(object sender, EventArgs e)
         {
             tbSegStart.Text = player.Ctlcontrols.currentPosition.ToString();
@@ -121,6 +120,11 @@ namespace _52Learning
                 treeSegs.SelectedNode.Text = selectedSeg.Name;
             }
         }
+        /// <summary>
+        /// 根据当前播放的视频文件地址，获取片段树上对应节点
+        /// </summary>
+        /// <param name="videoPath"></param>
+        /// <returns></returns>
         private TreeNode GetPlayingNode(string videoPath)
         {
             foreach (var node in treeSegs.Nodes)
@@ -142,8 +146,11 @@ namespace _52Learning
             if (seg == null)
                 return;
             var playingVideoPath = player.URL;
+            //当前播放视频的片段树节点
             TreeNode playingVideoNode = GetPlayingNode(player.URL);
+            //当前播放视频的 数据实体
             VideoInfo playingVideoInfo = playingVideoNode?.Tag as VideoInfo;
+            //如果为空，则新建VideoInfo、TreeNode。（防御性代码，基本不会发生）
             if (playingVideoNode == null || playingVideoInfo == null)
             {
                 playingVideoInfo = new VideoInfo(playingVideoPath);
@@ -152,7 +159,9 @@ namespace _52Learning
                 playingVideoNode.Tag = playingVideoNode;
                 treeSegs.Nodes.Add(playingVideoNode);
             }
+            //更新数据
             playingVideoInfo.Segments.Add(seg);
+            //更新UI
             var segNode = new TreeNode(seg.Name);
             segNode.Tag = seg;
             playingVideoNode.Nodes.Add(segNode);
@@ -211,9 +220,12 @@ namespace _52Learning
                 var videoNode = GetPlayingNode(filePath);
                 if (videoNode != null)
                     treeSegs.SelectedNode = videoNode;
-                else
+                else //新视频
                 {
+                    //新加 数据实体
                     var videoInfo = new VideoInfo(filePath);
+                    VideoInfoManager.Instance.AddVideoInfo(videoInfo);
+                    //新加 UI节点
                     videoNode = BuildTreeNodeByVideo(videoInfo);
                     treeSegs.Nodes.Insert(0,videoNode);
                 }
